@@ -8,22 +8,34 @@ output: html_document
 
 ## Loading the data
 
-This project is so interesting and relevant to my life! 
+This project is so interesting and relevant to my life! merpy derpy
 
 ```{r, include = FALSE}
 load("house_elections.rda")
 load("candidates.rda")
 load("committees.rda")
 load("contributions.rda")
-library(tidyverse)
-library(ggplot2)
 ```
 
 ```{r}
+library(tidyverse)
+library(scales)
+
 join1 <- contributions %>%
   inner_join(committees, by = "cmte_id") %>%
-  select("cmte_id", "cmte_dsgn", "cmte_type", "cmte_party_affiliation", "org_type", "transaction_type", "transaction_amt")
+  select("cmte_id", "cmte_dsgn", "cmte_type", "cmte_name",  "cmte_party_affiliation", "org_type", "transaction_type", "transaction_amt") %>%
+  filter(cmte_party_affiliation %in% c("DEM", "REP")) %>%
+  arrange(desc(transaction_amt))
 
-join1 <- join1 %>%
-  filter(cmte_party_affiliation %in% c("DEM", "REP"))
+join2 <- house_elections %>%
+  inner_join(candidates, by = c("fec_id" = "cand_id")) %>%
+  select("fec_id", "state", "district", "incumbent", "candidate_name", "cand_party_affiliation", "primary_votes", "runoff_votes", "general_votes", "ge_winner")
+
+join1plot <- join1 %>%
+  ggplot(aes(x = cmte_party_affiliation, y = transaction_amt)) +
+  geom_point() +
+  scale_x_discrete(name = "Party Affiliation") +
+  scale_y_continuous(name = "Transaction Amount", labels = dollar)
+
+join1plot
 ```
