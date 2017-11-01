@@ -23,6 +23,7 @@ library(scales)
 
 join1 <- contributions %>%
   inner_join(committees, by = "cmte_id") %>%
+<<<<<<< HEAD
   select("cmte_id", "cmte_dsgn", "cmte_type", "cmte_name",  "cmte_party_affiliation", "org_type", "transaction_type", "transaction_amt") %>%
   filter(cmte_party_affiliation %in% c("DEM", "REP")) %>%
   arrange(desc(transaction_amt))
@@ -39,3 +40,42 @@ join1plot <- join1 %>%
 
 join1plot
 ```
+=======
+  select("cmte_id", "cmte_dsgn", "cmte_type", "cmte_party_affiliation", "org_type", "transaction_type", "transaction_amt", "entity_type", "connected_org_name")
+
+# join2 <- join1 %>%
+#   filter(cmte_party_affiliation %in% c("DEM", "REP")) %>%
+#   group_by(cmte_party_affiliation) %>%
+#   summarise(avg_transaction = mean(transaction_amt), total_transaction = sum(transaction_amt)) %>%
+#   mutate(avg_transaction_as_int = readr::parse_number(avg_transaction))
+# 
+# join3 <- join1 %>%
+#   filter(cmte_party_affiliation %in% c("DEM", "REP")) %>%
+#   group_by(cmte_party_affiliation) %>%
+#   summarise(total_transaction = sum(transaction_amt))
+# 
+# ggplot(join2, aes(x = cmte_party_affiliation, y = avg_transaction_as_int)) +
+#   geom_point()
+```
+
+
+```{r}
+# house_elections <- house_elections %>%
+#   group_by(state) %>%
+#   summarise(total_votes = sum(primary_votes))
+# 
+# contributions <- contributions %>%
+#   group_by(state) %>%
+#   summarise(total_contr = sum(transaction_amt))
+
+
+```
+
+```{r}
+# join_house_cand <- house_elections %>%
+#   inner_join(candidates, by = c("fec_id" = "cand_id"))
+
+
+```
+
+>>>>>>> d1431684f0c8ddba889a49d41d05f218f3020793
